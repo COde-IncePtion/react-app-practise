@@ -1,0 +1,22 @@
+.game-board {
+    border: 5px solid #125B50;
+    width: 500px;
+    height: 500px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cell {
+    border: 5px solid #125B50;
+    width: 33.33%;
+    height: 33.33%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.game-symbol {
+    font-size: 100px;
+    font-weight: bold;
+    color: #FF6363;
+}
