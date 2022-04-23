@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './style.css';
 import { Cross, Zero } from './GameSymbols';
+import Modal from './Modal';
 
 const GAME = [
   [-1, -1, -1],
@@ -44,6 +45,8 @@ const validateBoard = (board, lastChance) => {
 const TicTacToe = () => {
   const [board, setBoard] = useState(GAME);
 
+  const [gameOver, setGameOver] = useState(false);
+
   const [currentPlayer, setCurrentPlayer] = useState({
     player: PLAYER.PLAYER1,
     sign: SIGN.ZERO
@@ -55,7 +58,7 @@ const TicTacToe = () => {
     if (!lastChance) return;
 
     if (validateBoard(board, lastChance)) {
-      console.log(currentPlayer, 'WINS !!!');
+      setGameOver(true);
       return;
     }
 
@@ -82,7 +85,7 @@ const TicTacToe = () => {
   };
 
   return (
-    <>
+    <div className="game-layout">
       <h1>Tic Tac Toe</h1>
       <div className="game-board">
         {board.map((row, rowIndex) => {
@@ -105,7 +108,8 @@ const TicTacToe = () => {
       <footer>
         <h3>{`${currentPlayer.player} turn : Please place a ${currentPlayer.sign.label}`}</h3>
       </footer>
-    </>
+      {gameOver && <Modal playerInfo={currentPlayer}/>}
+    </div>
   );
 };
 
