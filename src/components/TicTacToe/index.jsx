@@ -1,36 +1,63 @@
-import React, { useState } from 'react'
-import './style.css'
-import { Cross, Zero } from './GameSymbols'
+import React, { useEffect, useState } from 'react';
+import './style.css';
+import { Cross, Zero } from './GameSymbols';
 
 const GAME = [
   [-1, -1, -1],
   [-1, -1, -1],
   [-1, -1, -1]
-]
+];
 
 const PLAYER = {
   PLAYER1: 'PLAYER - 1',
   PLAYER2: 'PLAYER - 2'
-}
+};
 
 const SIGN = {
   ZERO: { label: 'ZERO', value: 0 },
   CROSS: { label: 'CROSS', value: 1 }
-}
+};
+
+const validateBoard = (board, lastChance) => {
+  const { rowIndex, colIndex } = lastChance;
+  const currentSymbol = board[rowIndex][colIndex];
+
+  let rowCheckResult = true,
+    colCheckResult = true;
+
+  for (let i = 0; i < board[rowIndex].length; i++) {
+    if (board[rowIndex][i] !== currentSymbol) {
+      rowCheckResult = false;
+      break;
+    }
+  }
+
+  for (let i = 0; i < board[colIndex].length; i++) {
+    if (board[i][colIndex] !== currentSymbol) {
+      colCheckResult = false;
+      break;
+    }
+  }
+  return rowCheckResult || colCheckResult;
+};
 
 const TicTacToe = () => {
-  const [board, setBoard] = useState(GAME)
+  const [board, setBoard] = useState(GAME);
 
   const [currentPlayer, setCurrentPlayer] = useState({
     player: PLAYER.PLAYER1,
     sign: SIGN.ZERO
-  })
+  });
 
-  const handleTurnPlayed = (rowIndex, colIndex) => {
-    setBoard(prevBoard => {
-      prevBoard[rowIndex][colIndex] = currentPlayer.sign.value
-      return [...prevBoard];
-    })
+  const [lastChance, setLastChance] = useState(null);
+
+  useEffect(() => {
+    if (!lastChance) return;
+
+    if (validateBoard(board, lastChance)) {
+      console.log(currentPlayer, 'WINS !!!');
+      return;
+    }
 
     setCurrentPlayer(currentPlayer =>
       currentPlayer.player === PLAYER.PLAYER1
@@ -42,8 +69,17 @@ const TicTacToe = () => {
             player: PLAYER.PLAYER1,
             sign: SIGN.ZERO
           }
-    )
-  }
+    );
+  }, [board, lastChance]);
+
+  const handleTurnPlayed = (rowIndex, colIndex) => {
+    setBoard(prevBoard => {
+      prevBoard[rowIndex][colIndex] = currentPlayer.sign.value;
+      return [...prevBoard];
+    });
+
+    setLastChance({ rowIndex, colIndex });
+  };
 
   return (
     <>
@@ -62,7 +98,7 @@ const TicTacToe = () => {
                 </div>
               ))}
             </>
-          )
+          );
         })}
       </div>
 
@@ -70,7 +106,7 @@ const TicTacToe = () => {
         <h3>{`${currentPlayer.player} turn : Please place a ${currentPlayer.sign.label}`}</h3>
       </footer>
     </>
-  )
-}
+  );
+};
 
-export default TicTacToe
+export default TicTacToe;
