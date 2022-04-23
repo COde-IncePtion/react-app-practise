@@ -3,19 +3,19 @@ import './style.css'
 import { Cross, Zero } from './GameSymbols'
 
 const GAME = [
-  [0, -1, -1],
+  [-1, -1, -1],
   [-1, -1, -1],
   [-1, -1, -1]
 ]
 
 const PLAYER = {
   PLAYER1: 'PLAYER - 1',
-  PLAYER2: 'PLAYER - 1'
+  PLAYER2: 'PLAYER - 2'
 }
 
 const SIGN = {
-  ZERO: 'ZERO',
-  CROSS: 'CROSS'
+  ZERO: { label: 'ZERO', value: 0 },
+  CROSS: { label: 'CROSS', value: 1 }
 }
 
 const TicTacToe = () => {
@@ -24,7 +24,26 @@ const TicTacToe = () => {
   const [currentPlayer, setCurrentPlayer] = useState({
     player: PLAYER.PLAYER1,
     sign: SIGN.ZERO
-  });
+  })
+
+  const handleTurnPlayed = (rowIndex, colIndex) => {
+    setBoard(prevBoard => {
+      prevBoard[rowIndex][colIndex] = currentPlayer.sign.value
+      return [...prevBoard];
+    })
+
+    setCurrentPlayer(currentPlayer =>
+      currentPlayer.player === PLAYER.PLAYER1
+        ? {
+            player: PLAYER.PLAYER2,
+            sign: SIGN.CROSS
+          }
+        : {
+            player: PLAYER.PLAYER1,
+            sign: SIGN.ZERO
+          }
+    )
+  }
 
   return (
     <>
@@ -34,8 +53,12 @@ const TicTacToe = () => {
           return (
             <>
               {row.map((cell, colIndex) => (
-                <div key={`${rowIndex}-${colIndex}`} className="cell">
-                  {cell !== -1 && (cell === 0 ? <Zero/> : <Cross/>) }
+                <div
+                  key={`${rowIndex}-${colIndex}`}
+                  className="cell"
+                  onClick={() => handleTurnPlayed(rowIndex, colIndex)}
+                >
+                  {cell !== -1 && (cell === 0 ? <Zero /> : <Cross />)}
                 </div>
               ))}
             </>
@@ -44,7 +67,7 @@ const TicTacToe = () => {
       </div>
 
       <footer>
-        <h3>{`${currentPlayer.player} turn : Please place a ${currentPlayer.sign}`}</h3>
+        <h3>{`${currentPlayer.player} turn : Please place a ${currentPlayer.sign.label}`}</h3>
       </footer>
     </>
   )
