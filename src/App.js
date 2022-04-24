@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import logo from './logo.svg'
 import './App.css'
 import { backendData } from './fetchData'
+import TicTacToe from './components/TicTacToe'
 
 const FileDisplayView = ({ file, children }) => {
   const [expanded, setExpanded] = useState(true)
@@ -34,8 +35,7 @@ const DisplayFiles = ({ filesData }) => {
 function App() {
   return (
     <div className="App">
-      <h1>Hey there</h1>
-      <DisplayFiles filesData={backendData} />
+      <TicTacToe/>
     </div>
   )
 }
