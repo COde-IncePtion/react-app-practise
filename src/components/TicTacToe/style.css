@@ -52,6 +52,27 @@
     width: 600px;
     height: 200px;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
+    padding-top: 15px;
+}
+
+.close-btn-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    padding-right: 20px;
+}
+
+.close-btn-text {
+    font-size: 35px;
+    font-weight: bold;
+}
+
+button {
+    outline: none;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
 }

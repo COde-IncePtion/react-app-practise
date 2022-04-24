@@ -3,11 +3,14 @@ import './style.css';
 import { Cross, Zero } from './GameSymbols';
 import Modal from './Modal';
 
-const GAME = [
-  [-1, -1, -1],
-  [-1, -1, -1],
-  [-1, -1, -1]
-];
+const getNewBoard = () =>
+  JSON.parse(
+    JSON.stringify([
+      [-1, -1, -1],
+      [-1, -1, -1],
+      [-1, -1, -1]
+    ])
+  );
 
 const PLAYER = {
   PLAYER1: 'PLAYER - 1',
@@ -77,9 +80,8 @@ const validateBoard = (board, lastChance) => {
   return rowCheckResult || colCheckResult || dia1CheckResult || dia2CheckResult;
 };
 
-
 const TicTacToe = () => {
-  const [board, setBoard] = useState(GAME);
+  const [board, setBoard] = useState(getNewBoard());
 
   const [gameOver, setGameOver] = useState(false);
 
@@ -120,6 +122,16 @@ const TicTacToe = () => {
     setLastChance({ rowIndex, colIndex });
   };
 
+  const handleModalClose = () => {
+    setLastChance(null);
+    setGameOver(false);
+    setBoard(getNewBoard());
+    setCurrentPlayer({
+      player: PLAYER.PLAYER1,
+      sign: SIGN.ZERO
+    });
+  };
+
   return (
     <div className="game-layout">
       <h1>Tic Tac Toe</h1>
@@ -144,7 +156,7 @@ const TicTacToe = () => {
       <footer>
         <h3>{`${currentPlayer.player} turn : Please place a ${currentPlayer.sign.label}`}</h3>
       </footer>
-      {gameOver && <Modal playerInfo={currentPlayer} />}
+      {gameOver && <Modal playerInfo={currentPlayer} onClose={handleModalClose} />}
     </div>
   );
 };
