@@ -114,6 +114,8 @@ const TicTacToe = () => {
   }, [board, lastChance]);
 
   const handleTurnPlayed = (rowIndex, colIndex) => {
+    if (board[rowIndex][colIndex] !== -1) return;
+
     setBoard(prevBoard => {
       prevBoard[rowIndex][colIndex] = currentPlayer.sign.value;
       return [...prevBoard];
