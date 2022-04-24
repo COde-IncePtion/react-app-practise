@@ -23,8 +23,10 @@ const validateBoard = (board, lastChance) => {
   const { rowIndex, colIndex } = lastChance;
   const currentSymbol = board[rowIndex][colIndex];
 
-  let rowCheckResult = true,
-    colCheckResult = true;
+  let rowCheckResult = true;
+  let colCheckResult = true;
+  let dia1CheckResult = false;
+  let dia2CheckResult = false;
 
   for (let i = 0; i < board[rowIndex].length; i++) {
     if (board[rowIndex][i] !== currentSymbol) {
@@ -39,8 +41,42 @@ const validateBoard = (board, lastChance) => {
       break;
     }
   }
-  return rowCheckResult || colCheckResult;
+
+  if (rowIndex === colIndex) {
+    let r = board.length - 1;
+    let c = board.length - 1;
+
+    while (r >= 0 && c >= 0) {
+      if (board[r][c] !== currentSymbol) {
+        dia1CheckResult = false;
+        break;
+      }
+      r = r - 1;
+      c = c - 1;
+    }
+
+    if (r < 0 && c < 0) dia1CheckResult = true;
+  }
+
+  let r = 0;
+  let c = board.length - 1;
+
+  if (board.length - 1 - rowIndex === colIndex) {
+    while (r < board.length && c >= 0) {
+      if (board[r][c] !== currentSymbol) {
+        dia2CheckResult = false;
+        break;
+      }
+      r = r + 1;
+      c = c - 1;
+    }
+
+    if (r === board.length && c === -1) dia2CheckResult = true;
+  }
+
+  return rowCheckResult || colCheckResult || dia1CheckResult || dia2CheckResult;
 };
+
 
 const TicTacToe = () => {
   const [board, setBoard] = useState(GAME);
@@ -108,7 +144,7 @@ const TicTacToe = () => {
       <footer>
         <h3>{`${currentPlayer.player} turn : Please place a ${currentPlayer.sign.label}`}</h3>
       </footer>
-      {gameOver && <Modal playerInfo={currentPlayer}/>}
+      {gameOver && <Modal playerInfo={currentPlayer} />}
     </div>
   );
 };
