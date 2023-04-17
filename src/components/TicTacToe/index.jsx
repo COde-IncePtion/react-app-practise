@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, useEffect, useState, Suspense } from 'react';
 import './style.css';
 import { Cross, Zero } from './GameSymbols';
 import Modal from './Modal';
+const CodeSplitModule = lazy(() => import('./codeSplitModule'));
 
 const getNewBoard = () =>
   JSON.parse(
@@ -159,6 +160,11 @@ const TicTacToe = () => {
         <h3>{`${currentPlayer.player} turn : Please place a ${currentPlayer.sign.label}`}</h3>
       </footer>
       {gameOver && <Modal playerInfo={currentPlayer} onClose={handleModalClose} />}
+      {gameOver && (
+        <Suspense fallback={<h1>loading</h1>}>
+          <CodeSplitModule />
+        </Suspense>
+      )}
     </div>
   );
 };
