@@ -2,11 +2,37 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Prerequisites
+
+- **Node.js 22** — the required version is pinned in `.nvmrc`
+- **npm 10+** — this project uses npm only. Don't use yarn or pnpm; `package-lock.json` is the only lockfile.
+
+If you use [nvm](https://github.com/nvm-sh/nvm), switch to the right Node version from the project root:
+
+```bash
+nvm install   # first time only
+nvm use
+```
+
+`.npmrc` sets `engine-strict=true`, so `npm install` fails on an unsupported Node or npm version instead of producing a broken install.
+
+## Installation
+
+```bash
+npm install
+```
+
+For CI or a clean, reproducible install that matches `package-lock.json` exactly:
+
+```bash
+npm ci
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `yarn start`
+### `npm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
